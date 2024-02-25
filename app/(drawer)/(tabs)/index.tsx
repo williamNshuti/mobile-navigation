@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-                        backgroundColor: '#fef3c7',
+    backgroundColor: '#fef3c7',
 
   },
   lottie:{

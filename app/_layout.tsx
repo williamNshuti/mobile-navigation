@@ -1,28 +1,33 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useFonts } from "expo-font";
+import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import React, { useEffect } from "react";
+import { SessionProvider } from "@/util/ctx";
+import { RootSiblingParent } from "react-native-root-siblings";
+import NetInfo from "@react-native-community/netinfo";
+import Toast from "react-native-root-toast";
 
-import { useColorScheme } from '@/components/useColorScheme';
+// const IOSClientID =
+//   "991200331563-hcfe89mbc8q9t71bgdcmilj250b5oru7.apps.googleusercontent.com";
+// const AndroidClientID =
+//   "991200331563-r1r845nmbafjajfmrbbi4b6am2rfuknt.apps.googleusercontent.com";
 
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
-} from 'expo-router';
+} from "expo-router";
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(drawer)',
+  initialRouteName: "(drawer)",
 };
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     ...FontAwesome.font,
   });
 
@@ -45,15 +50,46 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const colorScheme = useColorScheme();
+  const [isOnline, setIsOnline] = React.useState<boolean>(true);
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      setIsOnline(state.isConnected || false);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(drawer)" options={{ headerShown: false  }} />
-        {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
-        {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
-      </Stack>
-    </ThemeProvider>
+    <SessionProvider>
+      <RootSiblingParent>
+        <Toast
+          visible={isOnline === false}
+          duration={Toast.durations.SHORT}
+          position={Toast.positions.TOP}
+          shadow={true}
+          animation={true}
+          hideOnPress={true}
+          backgroundColor="red">
+          You Are Offline! 🚫
+        </Toast>
+        {/* <Toast
+          visible={isOnline}
+          duration={20}
+          position={Toast.positions.TOP}
+          shadow={true}
+          animation={true}
+          hideOnPress={true}
+          backgroundColor="blue">
+          You Are Online!
+        </Toast> */}
+        <Stack initialRouteName="(drawer)">
+          <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+          {/* <Stack.Screen name="index" options={{ headerShown: false }} /> */}
+          <Stack.Screen name="welcome" options={{ headerShown: false }} />
+        </Stack>
+      </RootSiblingParent>
+    </SessionProvider>
   );
 }

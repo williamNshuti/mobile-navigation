@@ -205,9 +205,9 @@ export default function Layout() {
   if (isLoading) {
     return <Text>Loading...</Text>;
   }
-  // if (!isLoading && !session) {
-  //   return <Redirect href="/welcome" />;
-  // }
+  if (!isLoading && !session) {
+    return <Redirect href="/welcome" />;
+  }
 
   return (
     <ThemeProvider value={theme === "dark" ? DarkTheme : DefaultTheme}>

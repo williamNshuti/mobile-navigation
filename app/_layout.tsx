@@ -86,7 +86,8 @@ function RootLayoutNav() {
         </Toast> */}
         <Stack initialRouteName="(drawer)">
           <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-          {/* <Stack.Screen name="index" options={{ headerShown: false }} /> */}
+          <Stack.Screen name="project" options={{ headerShown: false }} />
+          <Stack.Screen name="quiz" options={{ headerShown: false }} />
           <Stack.Screen name="welcome" options={{ headerShown: false }} />
         </Stack>
       </RootSiblingParent>

@@ -82,7 +82,8 @@ export default function Page() {
         onPress={() => {
           // promptAsync();
           // signOut();
-          router.replace("/(drawer)/(tabs)");
+          // router.replace("/(drawer)/(tabs)");
+          router.replace("/project");
         }}
         className="shadow p-3 rounded-full bg-[#50C878] w-[300]">
         <View className="flex-row justify-center items-center space-x-3">

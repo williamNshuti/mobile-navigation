@@ -20,9 +20,9 @@ export default function TabLayout() {
     return <Text>Loading...</Text>;
   }
 
-  // if (!session) {
-  //   return <Redirect href="/welcome" />;
-  // }
+  if (!session) {
+    return <Redirect href="/welcome" />;
+  }
   return (
     <Tabs
       screenOptions={{
